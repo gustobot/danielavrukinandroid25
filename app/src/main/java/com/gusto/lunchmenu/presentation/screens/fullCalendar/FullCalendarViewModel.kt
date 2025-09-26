@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.gusto.lunchmenu.data.MenuRepository
 import com.gusto.lunchmenu.data.models.CalendarItem
 import com.gusto.lunchmenu.data.models.Day
+import com.gusto.lunchmenu.presentation.models.FoodItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,11 +29,28 @@ class FullCalendarViewModel(
 
 	/**
 	 * Handles the user selecting a date on the calendar.
+	 * This now also sets the item to be viewed in the bottom sheet.
 	 */
 	fun onDateSelected(date: LocalDate) {
+		// Get the complete FoodItem directly from the repository
+		val foodItem = menuRepository.getFoodItemForDate(date)
 		_uiState.update { currentState ->
-			val newSelectedDate = if (currentState.selectedDate == date) null else date
-			currentState.copy(selectedDate = newSelectedDate)
+			currentState.copy(
+				selectedDate = date,
+				viewingFoodItem = foodItem // Set the item to be viewed
+			)
+		}
+	}
+
+	/**
+	 * Called when the bottom sheet is dismissed.
+	 */
+	fun onDismissBottomSheet() {
+		_uiState.update { currentState ->
+			currentState.copy(
+				selectedDate = null, // Also clear selection
+				viewingFoodItem = null
+			)
 		}
 	}
 

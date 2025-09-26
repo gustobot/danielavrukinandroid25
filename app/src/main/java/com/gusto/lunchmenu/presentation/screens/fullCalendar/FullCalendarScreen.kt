@@ -21,11 +21,13 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -44,6 +46,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gusto.lunchmenu.data.MenuRepository
 import com.gusto.lunchmenu.data.models.CalendarItem
 import com.gusto.lunchmenu.data.models.Day
+import com.gusto.lunchmenu.presentation.components.FoodItemDetailsSheet
 import com.gusto.lunchmenu.presentation.components.FoodItemTileView
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
@@ -61,6 +64,7 @@ fun FullCalendarScreen(
 	val uiState by viewModel.uiState.collectAsState() // Observe UI state
 	val coroutineScope = rememberCoroutineScope()
 	val lazyListState = rememberLazyListState()
+	val sheetState = rememberModalBottomSheetState()
 
 	// State for the date picker dialog can remain in the composable
 	var showDatePicker by rememberSaveable { mutableStateOf(false) }
@@ -74,6 +78,17 @@ fun FullCalendarScreen(
 			if (todayIndex != -1) {
 				lazyListState.scrollToItem(todayIndex)
 			}
+		}
+	}
+
+	// Show the bottom sheet when there is a food item being viewed
+	if (uiState.viewingFoodItem != null) {
+		ModalBottomSheet(
+			onDismissRequest = { viewModel.onDismissBottomSheet() },
+			sheetState = sheetState
+		) {
+			// Content of the bottom sheet
+			FoodItemDetailsSheet(foodItem = uiState.viewingFoodItem!!)
 		}
 	}
 

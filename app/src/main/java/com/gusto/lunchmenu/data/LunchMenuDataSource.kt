@@ -19,18 +19,29 @@ class LunchMenuDataSource {
 			weekday = Weekday.MONDAY,
 			name = "Chicken and waffles",
 			imageResId = R.drawable.chicken,
+			price = 14.99,
+			ingredients = listOf("Chicken", "Flour", "Egg", "Maple Syrup", "Butter"),
+			allergens = setOf("Gluten", "Egg", "Dairy"),
+			dietaryCertifications = listOf("High-Protein")
 		),
 		FoodItem(
 			week = 1,
 			weekday = Weekday.TUESDAY,
 			name = "Tacos",
-			imageResId = R.drawable.chicken,
+			imageResId = R.drawable.chicken, // Replace with a taco image
+			price = 12.50,
+			ingredients = listOf("Tortilla", "Ground Beef", "Lettuce", "Tomato", "Cheese"),
+			allergens = setOf("Gluten", "Dairy"),
 		),
 		FoodItem(
 			week = 1,
 			weekday = Weekday.WEDNESDAY,
-			name = "Curry",
-			imageResId = R.drawable.chicken,
+			name = "Vegan Curry",
+			imageResId = R.drawable.chicken, // Replace with a curry image
+			price = 13.00,
+			ingredients = listOf("Coconut Milk", "Tofu", "Broccoli", "Peppers", "Rice"),
+			allergens = setOf("Soy"),
+			dietaryCertifications = listOf("Vegan", "Gluten-Free")
 		),
 		FoodItem(
 			week = 1,
@@ -73,6 +84,9 @@ class LunchMenuDataSource {
 			weekday = Weekday.FRIDAY,
 			name = "Sandwiches",
 			imageResId = R.drawable.chicken,
+			price = 9.75,
+			ingredients = listOf("Bread", "Turkey", "Lettuce", "Mayonnaise"),
+			allergens = setOf("Gluten", "Egg"),
 		),
 	)
 
