@@ -9,7 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.gusto.lunchmenu.databinding.ActivityMainBinding
-import com.gusto.lunchmenu.presentation.MainActivityPrompt
+import com.gusto.lunchmenu.presentation.screens.FullCalendarScreen
+import com.gusto.lunchmenu.presentation.screens.MainActivityPrompt
 import com.gusto.lunchmenu.ui.theme.MyApplicationTheme
 
 class MainActivity : AppCompatActivity() {
@@ -41,10 +42,10 @@ class MainActivity : AppCompatActivity() {
         setContent {
             MyApplicationTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-	                MainActivityPrompt(
+	                FullCalendarScreen(
 		                modifier = Modifier
 			                .fillMaxSize()
-			                .padding(innerPadding)
+			                .padding(innerPadding),
 	                )
                 }
             }

@@ -2,11 +2,11 @@ package com.gusto.lunchmenu.presentation.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,63 +14,119 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gusto.lunchmenu.R
-import com.gusto.lunchmenu.data.FoodItem
-import com.gusto.lunchmenu.data.Weekday
+import com.gusto.lunchmenu.presentation.models.FoodItem
+import com.gusto.lunchmenu.data.models.Weekday
 import com.gusto.lunchmenu.ui.theme.MyApplicationTheme
 import com.gusto.lunchmenu.ui.theme.PurpleGrey80
 
 @Composable
 fun FoodItemTileView(
-	item: FoodItem,
-	modifier: Modifier = Modifier,
+    foodItem: FoodItem,
+    isSelected: Boolean,
+    isEnabled: Boolean,
+    onItemClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-	Column(
-		modifier = modifier
-			.background(
-				color = PurpleGrey80,
-				shape = RoundedCornerShape(24.dp),
-			)
-			.padding(16.dp),
-		verticalArrangement = Arrangement.SpaceBetween,
-		horizontalAlignment = Alignment.CenterHorizontally,
-		content = {
-			Text(
-				text = item.name,
-				fontSize = 24.sp,
-				modifier = Modifier.padding(4.dp),
-			)
+    val shape = RoundedCornerShape(24.dp)
+    val borderModifier = if (isSelected) {
+        Modifier.border(width = 2.dp, color = Color.Black, shape = shape)
+    } else {
+        Modifier
+    }
+	val alpha = if (isEnabled) 1F else 0.5F
 
-			Spacer(
-				modifier = Modifier.height(16.dp),
+    Column(
+        modifier = modifier
+	        .alpha(alpha)
+            .clickable(
+	            onClick = onItemClick,
+				enabled = isEnabled,
 			)
+            .background(
+                color = PurpleGrey80,
+                shape = shape,
+            )
+            .then(borderModifier)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            text = foodItem.name,
+            fontSize = 24.sp,
+            modifier = Modifier.padding(4.dp),
+        )
 
-			Image(
-				painter = painterResource(item.imageResId),
-				contentDescription = null,
-			)
-		},
-	)
+        Spacer(
+            modifier = Modifier.height(16.dp),
+        )
+
+	    if (foodItem.imageResId != 0) {
+		    Image(
+			    painter = painterResource(foodItem.imageResId),
+			    contentDescription = foodItem.name,
+		    )
+	    }
+    }
 }
 
-@Preview
+@Preview(name = "Enabled Selected")
 @Composable
-fun FoodItemTileViewPreview() {
+fun FoodItemTileViewEnabledSelectedPreview() {
+    MyApplicationTheme {
+        FoodItemTileView(
+            foodItem = FoodItem(
+                week = 1,
+                weekday = Weekday.MONDAY,
+                name = "Chicken and waffles",
+                imageResId = R.drawable.chicken,
+            ),
+            isSelected = true,
+	        isEnabled = true,
+            onItemClick = {},
+        )
+    }
+}
+
+@Preview(name = "Enabled Deselected")
+@Composable
+fun FoodItemTileViewEnabledDeselectedPreview() {
 	MyApplicationTheme {
 		FoodItemTileView(
-			item = FoodItem(
+			foodItem = FoodItem(
 				week = 1,
 				weekday = Weekday.MONDAY,
 				name = "Chicken and waffles",
 				imageResId = R.drawable.chicken,
-			)
+			),
+			isSelected = false,
+			isEnabled = true,
+			onItemClick = {},
+		)
+	}
+}
+
+@Preview(name = "Disabled")
+@Composable
+fun FoodItemTileViewDisabledPreview() {
+	MyApplicationTheme {
+		FoodItemTileView(
+			foodItem = FoodItem(
+				week = 1,
+				weekday = Weekday.MONDAY,
+				name = "Chicken and waffles",
+				imageResId = R.drawable.chicken,
+			),
+			isSelected = true,
+			isEnabled = false,
+			onItemClick = {},
 		)
 	}
 }

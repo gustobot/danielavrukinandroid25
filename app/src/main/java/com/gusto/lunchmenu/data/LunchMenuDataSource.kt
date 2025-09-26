@@ -1,6 +1,8 @@
 package com.gusto.lunchmenu.data
 
 import com.gusto.lunchmenu.R
+import com.gusto.lunchmenu.presentation.models.FoodItem
+import com.gusto.lunchmenu.data.models.Weekday
 import kotlinx.coroutines.delay
 
 class LunchMenuDataSource {
@@ -74,14 +76,11 @@ class LunchMenuDataSource {
 		),
 	)
 
-    suspend fun getLunchMenu(): Map<Int, List<String>> {
+    suspend fun getLunchMenu(): Map<Int, List<FoodItem>> {
         delay(3_000)
 	    return lunchItems
 		    .groupBy {
 				it.week
-		    }
-		    .mapValues { entry ->
-				entry.value.map { it.name }
 		    }
         /*return mapOf(
             1 to listOf("Chicken and waffles", "Tacos", "Curry", "Pizza", "Sushi"),

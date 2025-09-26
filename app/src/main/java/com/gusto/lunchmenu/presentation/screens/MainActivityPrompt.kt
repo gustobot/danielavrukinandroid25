@@ -1,4 +1,4 @@
-package com.gusto.lunchmenu.presentation
+package com.gusto.lunchmenu.presentation.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

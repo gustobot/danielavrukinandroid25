@@ -1,7 +1,8 @@
-package com.gusto.lunchmenu.data
+package com.gusto.lunchmenu.presentation.models
 
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Immutable
+import com.gusto.lunchmenu.data.models.Weekday
 
 // week is 1-indexed
 @Immutable
