@@ -66,6 +66,7 @@ fun CalendarLunchMenuScreen(
 							)
 						}"
 					),
+					date = day.date,
 					isSelected = day.date == selectedDate,
 					isEnabled = true,
 					onItemClick = {

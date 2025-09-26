@@ -228,6 +228,7 @@ private fun WeekView(
 				if (day != null && day.foodItem != null) {
 					FoodItemTileView(
 						foodItem = day.foodItem,
+						date = day.date, // Pass the date to the tile
 						isSelected = day.date == selectedDate,
 						onItemClick = { onDateSelected(day.date) },
 						isEnabled = !day.date.isBefore(today)
