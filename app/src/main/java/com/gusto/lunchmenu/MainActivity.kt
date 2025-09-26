@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.gusto.lunchmenu.databinding.ActivityMainBinding
+import com.gusto.lunchmenu.presentation.MainActivityPrompt
 import com.gusto.lunchmenu.ui.theme.MyApplicationTheme
 
 class MainActivity : AppCompatActivity() {
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity() {
          * Below are two functions that can be used to get started
          * Uncomment one and remove the other
          */
-//        setupComposeUI()
+        setupComposeUI()
 //        setupFragmentUI()
     }
 
@@ -40,11 +41,11 @@ class MainActivity : AppCompatActivity() {
         setContent {
             MyApplicationTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainActivityPrompt(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding)
-                    )
+	                MainActivityPrompt(
+		                modifier = Modifier
+			                .fillMaxSize()
+			                .padding(innerPadding)
+	                )
                 }
             }
         }
