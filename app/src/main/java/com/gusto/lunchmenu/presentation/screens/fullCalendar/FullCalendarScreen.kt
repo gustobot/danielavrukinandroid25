@@ -1,11 +1,10 @@
-package com.gusto.lunchmenu.presentation.screens
+package com.gusto.lunchmenu.presentation.screens.fullCalendar
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,16 +28,19 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gusto.lunchmenu.data.MenuRepository
 import com.gusto.lunchmenu.data.models.CalendarItem
 import com.gusto.lunchmenu.data.models.Day
@@ -53,37 +55,25 @@ import java.time.temporal.TemporalAdjusters
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun FullCalendarScreen(
-	// In a real app, inject this via a ViewModel
-	menuRepository: MenuRepository = remember { MenuRepository() },
 	modifier: Modifier = Modifier,
+	viewModel: FullCalendarViewModel = viewModel(), // Obtain ViewModel instance
 ) {
+	val uiState by viewModel.uiState.collectAsState() // Observe UI state
 	val coroutineScope = rememberCoroutineScope()
 	val lazyListState = rememberLazyListState()
 
-	// State for the calendar data and loading status
-	var calendarItems by remember { mutableStateOf<List<CalendarItem>>(emptyList()) }
-	var isLoading by remember { mutableStateOf(true) }
-
-	// State for selection and the date picker
-	var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
+	// State for the date picker dialog can remain in the composable
+	var showDatePicker by rememberSaveable { mutableStateOf(false) }
 	val today = remember { LocalDate.now() }
-	val showDatePicker = remember { mutableStateOf(false) }
 
-	// Load menu data and generate the calendar structure
-	LaunchedEffect(Unit) {
-		isLoading = true
-		menuRepository.loadMenu()
-		calendarItems = generateCalendarItems(
-			start = today.minusMonths(6),
-			end = today.plusMonths(6),
-			menuRepository = menuRepository
-		)
-		isLoading = false
-
-		// Auto-scroll to today's date on initial load
-		val todayIndex = findWeekIndexForDate(calendarItems, today)
-		if (todayIndex != -1) {
-			lazyListState.scrollToItem(todayIndex)
+	// This effect now reacts to changes in the calendarItems list
+	LaunchedEffect(uiState.calendarItems) {
+		// Auto-scroll to today's date only when the list is first loaded
+		if (lazyListState.firstVisibleItemIndex == 0 && lazyListState.firstVisibleItemScrollOffset == 0) {
+			val todayIndex = findWeekIndexForDate(uiState.calendarItems, today)
+			if (todayIndex != -1) {
+				lazyListState.scrollToItem(todayIndex)
+			}
 		}
 	}
 
@@ -94,14 +84,14 @@ fun FullCalendarScreen(
 				title = { Text("Lunch Calendar") },
 				actions = {
 					// Button to open the date picker
-					Button(onClick = { showDatePicker.value = true }) {
+					Button(onClick = { showDatePicker = true }) {
 						Text("Pick Date")
 					}
 					Spacer(Modifier.width(8.dp))
 					// Button to scroll back to today
 					Button(onClick = {
 						coroutineScope.launch {
-							val todayIndex = findWeekIndexForDate(calendarItems, today)
+							val todayIndex = findWeekIndexForDate(uiState.calendarItems, today)
 							if (todayIndex != -1) {
 								lazyListState.animateScrollToItem(todayIndex)
 							}
@@ -113,7 +103,7 @@ fun FullCalendarScreen(
 			)
 		}
 	) { paddingValues ->
-		if (isLoading) {
+		if (uiState.isLoading) {
 			Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
 				CircularProgressIndicator()
 			}
@@ -123,7 +113,8 @@ fun FullCalendarScreen(
 				state = lazyListState,
 				contentPadding = PaddingValues(horizontal = 16.dp)
 			) {
-				calendarItems.forEach { item ->
+				// The list is now driven by the state from the ViewModel
+				uiState.calendarItems.forEach { item ->
 					when (item) {
 						is CalendarItem.MonthHeader -> {
 							// Sticky header for the month
@@ -138,10 +129,8 @@ fun FullCalendarScreen(
 								WeekView(
 									week = item,
 									today = today,
-									selectedDate = selectedDate,
-									onDateSelected = { date ->
-										selectedDate = if (selectedDate == date) null else date
-									}
+									selectedDate = uiState.selectedDate, // Use selectedDate from state
+									onDateSelected = viewModel::onDateSelected // Pass event to ViewModel
 								)
 							}
 						}
@@ -152,32 +141,32 @@ fun FullCalendarScreen(
 	}
 
 	// Material 3 Date Picker Dialog
-	if (showDatePicker.value) {
+	if (showDatePicker) {
 		val datePickerState = rememberDatePickerState(
 			initialSelectedDateMillis = System.currentTimeMillis()
 		)
 		DatePickerDialog(
-			onDismissRequest = { showDatePicker.value = false },
+			onDismissRequest = { showDatePicker = false },
 			confirmButton = {
 				TextButton(
 					onClick = {
-						showDatePicker.value = false
+						showDatePicker = false
 						val millis = datePickerState.selectedDateMillis ?: return@TextButton
 						val newDate = LocalDate.ofEpochDay(millis / (1000 * 60 * 60 * 24))
 
 						// Scroll to the selected date
 						coroutineScope.launch {
-							val index = findWeekIndexForDate(calendarItems, newDate)
+							val index = findWeekIndexForDate(uiState.calendarItems, newDate)
 							if (index != -1) {
 								lazyListState.animateScrollToItem(index)
-								selectedDate = newDate // Also select the date
+								viewModel.onDateSelected(newDate) // Update selection in ViewModel
 							}
 						}
 					}
 				) { Text("OK") }
 			},
 			dismissButton = {
-				TextButton(onClick = { showDatePicker.value = false }) { Text("Cancel") }
+				TextButton(onClick = { showDatePicker = false }) { Text("Cancel") }
 			}
 		) {
 			DatePicker(state = datePickerState)
