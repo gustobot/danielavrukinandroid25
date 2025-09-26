@@ -1,8 +1,8 @@
 package com.gusto.lunchmenu.data
 
 import com.gusto.lunchmenu.R
-import com.gusto.lunchmenu.presentation.models.FoodItem
 import com.gusto.lunchmenu.data.models.Weekday
+import com.gusto.lunchmenu.presentation.models.FoodItem
 import kotlinx.coroutines.delay
 
 class LunchMenuDataSource {

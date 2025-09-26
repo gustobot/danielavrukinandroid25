@@ -1,6 +1,5 @@
 package com.gusto.lunchmenu.data
 
-import androidx.compose.animation.with
 import com.gusto.lunchmenu.data.models.Weekday
 import com.gusto.lunchmenu.presentation.models.FoodItem
 import java.time.DayOfWeek
