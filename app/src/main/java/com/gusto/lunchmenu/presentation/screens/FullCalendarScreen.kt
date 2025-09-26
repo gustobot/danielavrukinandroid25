@@ -9,9 +9,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -203,37 +206,44 @@ private fun WeekView(
 	selectedDate: LocalDate?,
 	onDateSelected: (LocalDate) -> Unit,
 ) {
-	Row(
+	// Create a map of the days in the week for easy lookup
+	val daysByWeekDay = week.days.associateBy { it.date.dayOfWeek }
+
+	// Define the work week explicitly
+	val workWeek = listOf(
+		DayOfWeek.MONDAY,
+		DayOfWeek.TUESDAY,
+		DayOfWeek.WEDNESDAY,
+		DayOfWeek.THURSDAY,
+		DayOfWeek.FRIDAY
+	)
+
+	// Use LazyRow for a horizontally scrollable container
+	LazyRow(
 		modifier = Modifier
 			.fillMaxWidth()
 			.padding(vertical = 8.dp),
 		horizontalArrangement = Arrangement.spacedBy(8.dp)
 	) {
-		// Create a map of the days in the week for easy lookup
-		val daysByWeekDay = week.days.associateBy { it.date.dayOfWeek }
-
-		// Define the work week explicitly
-		val workWeek = listOf(
-			DayOfWeek.MONDAY,
-			DayOfWeek.TUESDAY,
-			DayOfWeek.WEDNESDAY,
-			DayOfWeek.THURSDAY,
-			DayOfWeek.FRIDAY
-		)
-
 		// Iterate through the explicit list to ensure a consistent 5-day layout
-		for (dayOfWeek in workWeek) {
+		items(workWeek) { dayOfWeek ->
 			val day = daysByWeekDay[dayOfWeek]
-			Box(modifier = Modifier.weight(1f)) {
-				if (day != null && day.foodItem != null) {
-					FoodItemTileView(
-						foodItem = day.foodItem,
-						date = day.date, // Pass the date to the tile
-						isSelected = day.date == selectedDate,
-						onItemClick = { onDateSelected(day.date) },
-						isEnabled = !day.date.isBefore(today)
-					)
-				}
+
+			if (day != null && day.foodItem != null) {
+				FoodItemTileView(
+					modifier = Modifier
+						.width(160.dp) // Set a fixed width for each tile
+						.height(280.dp), // Set a fixed height for each tile
+					foodItem = day.foodItem,
+					date = day.date,
+					isSelected = day.date == selectedDate,
+					onItemClick = { onDateSelected(day.date) },
+					isEnabled = !day.date.isBefore(today)
+				)
+			} else {
+				// Add a spacer for days that don't have a menu item (e.g., out of range)
+				// This keeps the alignment consistent if a week is partially filled.
+				Spacer(modifier = Modifier.width(160.dp))
 			}
 		}
 	}
