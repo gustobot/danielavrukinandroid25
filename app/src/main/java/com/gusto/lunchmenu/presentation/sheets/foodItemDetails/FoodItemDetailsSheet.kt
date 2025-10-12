@@ -9,7 +9,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
+import androidx.compose.material3.DividerDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -51,7 +52,11 @@ fun FoodItemDetailsSheet(foodItem: FoodItem, modifier: Modifier = Modifier) {
 			)
 		}
 
-		Divider(modifier = Modifier.padding(vertical = 16.dp))
+		HorizontalDivider(
+			modifier = Modifier.padding(vertical = 16.dp),
+			thickness = DividerDefaults.Thickness,
+			color = DividerDefaults.color,
+		)
 
 		// Ingredients Section
 		Text(
