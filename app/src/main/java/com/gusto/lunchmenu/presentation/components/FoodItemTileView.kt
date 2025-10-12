@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.dp
 import com.gusto.lunchmenu.R
 import com.gusto.lunchmenu.data.models.Weekday
 import com.gusto.lunchmenu.presentation.models.FoodItem
-import com.gusto.lunchmenu.ui.theme.MyApplicationTheme
 import com.gusto.lunchmenu.ui.theme.PurpleGrey80
+import com.gusto.lunchmenu.ui.util.ThemedPreview
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -105,8 +105,8 @@ fun FoodItemTileView(
 
 @Preview(name = "Enabled Selected")
 @Composable
-fun FoodItemTileViewEnabledSelectedPreview() {
-	MyApplicationTheme {
+private fun FoodItemTileViewEnabledSelectedPreview() {
+	ThemedPreview {
 		FoodItemTileView(
 			foodItem = FoodItem(
 				week = 1,
@@ -124,8 +124,8 @@ fun FoodItemTileViewEnabledSelectedPreview() {
 
 @Preview(name = "Enabled Deselected")
 @Composable
-fun FoodItemTileViewEnabledDeselectedPreview() {
-	MyApplicationTheme {
+private fun FoodItemTileViewEnabledDeselectedPreview() {
+	ThemedPreview {
 		FoodItemTileView(
 			foodItem = FoodItem(
 				week = 1,
@@ -143,8 +143,8 @@ fun FoodItemTileViewEnabledDeselectedPreview() {
 
 @Preview(name = "Disabled")
 @Composable
-fun FoodItemTileViewDisabledPreview() {
-	MyApplicationTheme {
+private fun FoodItemTileViewDisabledPreview() {
+	ThemedPreview {
 		FoodItemTileView(
 			foodItem = FoodItem(
 				week = 1,

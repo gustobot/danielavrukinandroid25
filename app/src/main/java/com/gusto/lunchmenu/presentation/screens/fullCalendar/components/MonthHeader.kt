@@ -9,8 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.gusto.lunchmenu.ui.util.ThemedPreview
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
@@ -29,4 +32,28 @@ fun MonthHeader(
 			.background(MaterialTheme.colorScheme.surface)
 			.padding(vertical = 8.dp)
 	)
+}
+
+@Preview(name = "Current Month")
+@Composable
+private fun MonthHeaderPreview() {
+	ThemedPreview {
+		MonthHeader(yearMonth = YearMonth.now())
+	}
+}
+
+@Preview(name = "Different Month")
+@Composable
+private fun MonthHeaderPreview_DifferentMonth() {
+	ThemedPreview {
+		MonthHeader(yearMonth = YearMonth.of(2024, 1)) // January 2024
+	}
+}
+
+@Preview(name = "Tablet Preview", device = Devices.NEXUS_7)
+@Composable
+private fun MonthHeaderPreview_Tablet() {
+	ThemedPreview {
+		MonthHeader(yearMonth = YearMonth.of(2025, 8)) // August 2025
+	}
 }
