@@ -1,6 +1,5 @@
-package com.gusto.lunchmenu.presentation.components
+package com.gusto.lunchmenu.presentation.sheets.foodItemDetails
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -10,23 +9,20 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.gusto.lunchmenu.data.models.Weekday
 import com.gusto.lunchmenu.presentation.models.FoodItem
+import com.gusto.lunchmenu.presentation.sheets.foodItemDetails.components.CertificationRow
+import com.gusto.lunchmenu.presentation.sheets.foodItemDetails.components.IngredientChip
 import com.gusto.lunchmenu.ui.theme.MyApplicationTheme
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -92,44 +88,6 @@ fun FoodItemDetailsSheet(foodItem: FoodItem, modifier: Modifier = Modifier) {
 	}
 }
 
-@Composable
-private fun IngredientChip(text: String, isAllergen: Boolean) {
-	val backgroundColor = if (isAllergen) {
-		MaterialTheme.colorScheme.errorContainer
-	} else {
-		MaterialTheme.colorScheme.secondaryContainer
-	}
-	val textColor = if (isAllergen) {
-		MaterialTheme.colorScheme.onErrorContainer
-	} else {
-		MaterialTheme.colorScheme.onSecondaryContainer
-	}
-
-	Text(
-		text = text,
-		modifier = Modifier
-			.background(color = backgroundColor, shape = CircleShape)
-			.padding(horizontal = 12.dp, vertical = 6.dp),
-		color = textColor,
-		fontWeight = if (isAllergen) FontWeight.Bold else FontWeight.Normal,
-		style = MaterialTheme.typography.bodyMedium
-	)
-}
-
-@Composable
-private fun CertificationRow(text: String) {
-	Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(vertical = 4.dp)) {
-		Icon(
-			imageVector = Icons.Default.CheckCircle,
-			contentDescription = null,
-			tint = MaterialTheme.colorScheme.primary,
-			modifier = Modifier.size(20.dp)
-		)
-		Spacer(Modifier.padding(horizontal = 4.dp))
-		Text(text = text, style = MaterialTheme.typography.bodyLarge)
-	}
-}
-
 @Preview
 @Composable
 private fun FoodItemDetailsSheetPreview() {
@@ -138,7 +96,7 @@ private fun FoodItemDetailsSheetPreview() {
 			FoodItemDetailsSheet(
 				foodItem = FoodItem(
 					week = 1,
-					weekday = com.gusto.lunchmenu.data.models.Weekday.MONDAY,
+					weekday = Weekday.MONDAY,
 					name = "Chicken and waffles",
 					imageResId = 0,
 					price = 14.99,
