@@ -31,7 +31,7 @@ class LunchMenuDataSource {
 			imageResId = R.drawable.chicken, // Replace with a taco image
 			price = 12.50,
 			ingredients = listOf("Tortilla", "Ground Beef", "Lettuce", "Tomato", "Cheese"),
-			allergens = setOf("Gluten", "Dairy"),
+			allergens = setOf("Gluten", "Dairy")
 		),
 		FoodItem(
 			week = 1,
@@ -47,43 +47,63 @@ class LunchMenuDataSource {
 			week = 1,
 			weekday = Weekday.THURSDAY,
 			name = "Pizza",
-			imageResId = R.drawable.chicken,
+			imageResId = R.drawable.chicken, // Replace with a pizza image
+			price = 15.50,
+			ingredients = listOf("Dough", "Tomato Sauce", "Cheese", "Pepperoni"),
+			allergens = setOf("Gluten", "Dairy")
 		),
 		FoodItem(
 			week = 1,
 			weekday = Weekday.FRIDAY,
 			name = "Sushi",
-			imageResId = R.drawable.chicken,
+			imageResId = R.drawable.chicken, // Replace with a sushi image
+			price = 18.00,
+			ingredients = listOf("Rice", "Nori", "Tuna", "Avocado"),
+			allergens = setOf("Fish"),
+			dietaryCertifications = listOf("Gluten-Free")
 		),
 		FoodItem(
 			week = 2,
 			weekday = Weekday.MONDAY,
 			name = "Breakfast for lunch",
-			imageResId = R.drawable.chicken,
+			imageResId = R.drawable.chicken, // Replace with a breakfast image
+			price = 11.25,
+			ingredients = listOf("Pancakes", "Sausage", "Scrambled Eggs", "Syrup"),
+			allergens = setOf("Gluten", "Egg", "Dairy")
 		),
 		FoodItem(
 			week = 2,
 			weekday = Weekday.TUESDAY,
 			name = "Hamburgers",
-			imageResId = R.drawable.chicken,
+			imageResId = R.drawable.chicken, // Replace with a hamburger image
+			price = 14.00,
+			ingredients = listOf("Bun", "Beef Patty", "Lettuce", "Tomato", "Onion"),
+			allergens = setOf("Gluten")
 		),
 		FoodItem(
 			week = 2,
 			weekday = Weekday.WEDNESDAY,
 			name = "Spaghetti",
-			imageResId = R.drawable.chicken,
+			imageResId = R.drawable.chicken, // Replace with a spaghetti image
+			price = 13.75,
+			ingredients = listOf("Pasta", "Tomato Sauce", "Meatballs", "Parmesan Cheese"),
+			allergens = setOf("Gluten", "Dairy")
 		),
 		FoodItem(
 			week = 2,
 			weekday = Weekday.THURSDAY,
 			name = "Salmon",
-			imageResId = R.drawable.chicken,
+			imageResId = R.drawable.chicken, // Replace with a salmon image
+			price = 19.50,
+			ingredients = listOf("Salmon Fillet", "Asparagus", "Lemon", "Dill"),
+			allergens = setOf("Fish"),
+			dietaryCertifications = listOf("Gluten-Free", "High-Protein")
 		),
 		FoodItem(
 			week = 2,
 			weekday = Weekday.FRIDAY,
 			name = "Sandwiches",
-			imageResId = R.drawable.chicken,
+			imageResId = R.drawable.chicken, // Replace with a sandwich image
 			price = 9.75,
 			ingredients = listOf("Bread", "Turkey", "Lettuce", "Mayonnaise"),
 			allergens = setOf("Gluten", "Egg"),
@@ -91,14 +111,7 @@ class LunchMenuDataSource {
 	)
 
 	suspend fun getLunchMenu(): Map<Int, List<FoodItem>> {
-		delay(3_000)
-		return lunchItems
-			.groupBy {
-				it.week
-			}
-		/*return mapOf(
-			1 to listOf("Chicken and waffles", "Tacos", "Curry", "Pizza", "Sushi"),
-			2 to listOf("Breakfast for lunch", "Hamburgers", "Spaghetti", "Salmon", "Sandwiches"),
-		)*/
+		delay(1_500)
+		return lunchItems.groupBy { it.week }
 	}
 }
