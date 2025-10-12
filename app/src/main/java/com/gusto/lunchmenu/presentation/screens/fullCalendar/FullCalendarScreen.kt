@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -27,7 +28,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -38,7 +38,7 @@ import com.gusto.lunchmenu.data.models.CalendarItem
 import com.gusto.lunchmenu.presentation.screens.fullCalendar.components.MonthHeader
 import com.gusto.lunchmenu.presentation.screens.fullCalendar.components.WeekView
 import com.gusto.lunchmenu.presentation.sheets.foodItemDetails.FoodItemDetailsSheet
-import kotlinx.coroutines.launch
+import java.time.DayOfWeek
 import java.time.LocalDate
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -48,30 +48,51 @@ fun FullCalendarScreen(
 	viewModel: FullCalendarViewModel = viewModel(), // Obtain ViewModel instance
 ) {
 	val uiState by viewModel.uiState.collectAsState() // Observe UI state
-	val coroutineScope = rememberCoroutineScope()
-	val lazyListState = rememberLazyListState()
-	val sheetState = rememberModalBottomSheetState()
+	val verticalLazyListState = rememberLazyListState()
+	val horizontalLazyListStates = remember(uiState.calendarItems) {
+		val weekRows = uiState.calendarItems.filterIsInstance<CalendarItem.WeekRow>()
+		weekRows.associate { week -> week.hashCode() to LazyListState() }
+	}
 
 	// State for the date picker dialog can remain in the composable
 	var showDatePicker by rememberSaveable { mutableStateOf(false) }
+	var initialScrollDone by rememberSaveable { mutableStateOf(false) }
 	val today = remember { LocalDate.now() }
 
-	// This effect now reacts to changes in the calendarItems list
-	LaunchedEffect(uiState.calendarItems) {
-		// Auto-scroll to today's date only when the list is first loaded
-		if (lazyListState.firstVisibleItemIndex == 0 && lazyListState.firstVisibleItemScrollOffset == 0) {
-			val todayIndex = findWeekIndexForDate(uiState.calendarItems, today)
-			if (todayIndex != -1) {
-				lazyListState.scrollToItem(todayIndex)
+	// Effect to handle all scrolling logic
+	LaunchedEffect(uiState.selectedDate, uiState.calendarItems) {
+		val dateToScrollTo = uiState.selectedDate ?: if (!initialScrollDone) today else null
+
+		if (dateToScrollTo != null && uiState.calendarItems.isNotEmpty()) {
+			val targetDate = when (dateToScrollTo.dayOfWeek) {
+				DayOfWeek.SATURDAY -> dateToScrollTo.plusDays(2)
+				DayOfWeek.SUNDAY -> dateToScrollTo.plusDays(1)
+				else -> dateToScrollTo
+			}
+
+			val weekIndex = findWeekIndexForDate(uiState.calendarItems, targetDate)
+			if (weekIndex != -1) {
+				// Vertical scroll
+				verticalLazyListState.animateScrollToItem(weekIndex)
+
+				// Horizontal scroll
+				val weekItem = uiState.calendarItems[weekIndex] as? CalendarItem.WeekRow
+				if (weekItem != null) {
+					val dayIndex = weekItem.days.indexOfFirst { it.date == targetDate }
+					if (dayIndex != -1) {
+						horizontalLazyListStates[weekItem.hashCode()]?.animateScrollToItem(dayIndex)
+					}
+				}
 			}
 		}
 	}
+
 
 	// Show the bottom sheet when there is a food item being viewed
 	if (uiState.viewingFoodItem != null) {
 		ModalBottomSheet(
 			onDismissRequest = { viewModel.onDismissBottomSheet() },
-			sheetState = sheetState
+			sheetState = rememberModalBottomSheetState()
 		) {
 			// Content of the bottom sheet
 			FoodItemDetailsSheet(foodItem = uiState.viewingFoodItem!!)
@@ -90,14 +111,7 @@ fun FullCalendarScreen(
 					}
 					Spacer(Modifier.width(8.dp))
 					// Button to scroll back to today
-					Button(onClick = {
-						coroutineScope.launch {
-							val todayIndex = findWeekIndexForDate(uiState.calendarItems, today)
-							if (todayIndex != -1) {
-								lazyListState.animateScrollToItem(todayIndex)
-							}
-						}
-					}) {
+					Button(onClick = { viewModel.onDateSelected(today) }) {
 						Text("Today")
 					}
 				}
@@ -111,27 +125,33 @@ fun FullCalendarScreen(
 		} else {
 			LazyColumn(
 				modifier = Modifier.padding(paddingValues),
-				state = lazyListState,
+				state = verticalLazyListState,
 				contentPadding = PaddingValues(horizontal = 16.dp)
 			) {
-				// The list is now driven by the state from the ViewModel
 				uiState.calendarItems.forEach { item ->
 					when (item) {
 						is CalendarItem.MonthHeader -> {
-							// Sticky header for the month
-							stickyHeader {
+							stickyHeader(
+								key = item.yearMonth,
+								contentType = "MonthHeader"
+							) {
 								MonthHeader(yearMonth = item.yearMonth)
 							}
 						}
 
 						is CalendarItem.WeekRow -> {
-							item {
-								// Row containing the FoodItemTileViews for the week
+							val weekKey = item.days.firstOrNull()?.date
+							item(
+								key = weekKey,
+								contentType = "WeekRow"
+							) {
 								WeekView(
 									week = item,
 									today = today,
-									selectedDate = uiState.selectedDate, // Use selectedDate from state
-									onDateSelected = viewModel::onDateSelected // Pass event to ViewModel
+									selectedDate = uiState.selectedDate,
+									onDateSelected = viewModel::onDateSelected,
+									lazyListState = horizontalLazyListStates[item.hashCode()]
+										?: rememberLazyListState()
 								)
 							}
 						}
@@ -154,15 +174,7 @@ fun FullCalendarScreen(
 						showDatePicker = false
 						val millis = datePickerState.selectedDateMillis ?: return@TextButton
 						val newDate = LocalDate.ofEpochDay(millis / (1000 * 60 * 60 * 24))
-
-						// Scroll to the selected date
-						coroutineScope.launch {
-							val index = findWeekIndexForDate(uiState.calendarItems, newDate)
-							if (index != -1) {
-								lazyListState.animateScrollToItem(index)
-								viewModel.onDateSelected(newDate) // Update selection in ViewModel
-							}
-						}
+						viewModel.onDateSelected(newDate)
 					}
 				) { Text("OK") }
 			},
@@ -177,5 +189,7 @@ fun FullCalendarScreen(
 
 // Helper to find the index of the week containing a specific date
 private fun findWeekIndexForDate(items: List<CalendarItem>, date: LocalDate): Int {
-	return items.indexOfFirst { it is CalendarItem.WeekRow && it.contains(date) }
+	// Adjust the date to the Monday of its week to handle weekends and ensure we find a valid week.
+	val searchDate = date.with(DayOfWeek.MONDAY)
+	return items.indexOfFirst { it is CalendarItem.WeekRow && it.contains(searchDate) }
 }

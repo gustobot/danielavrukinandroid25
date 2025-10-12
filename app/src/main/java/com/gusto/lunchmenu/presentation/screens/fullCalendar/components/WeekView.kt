@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
@@ -30,6 +32,7 @@ fun WeekView(
 	today: LocalDate,
 	selectedDate: LocalDate?,
 	onDateSelected: (LocalDate) -> Unit,
+	lazyListState: LazyListState = rememberLazyListState(),
 ) {
 	// Create a map of the days in the week for easy lookup
 	val daysByWeekDay = week.days.associateBy { it.date.dayOfWeek }
@@ -48,7 +51,8 @@ fun WeekView(
 		modifier = modifier
 			.fillMaxWidth()
 			.padding(vertical = 8.dp),
-		horizontalArrangement = Arrangement.spacedBy(8.dp)
+		horizontalArrangement = Arrangement.spacedBy(8.dp),
+		state = lazyListState,
 	) {
 		// Iterate through the explicit list to ensure a consistent 5-day layout
 		items(workWeek) { dayOfWeek ->
