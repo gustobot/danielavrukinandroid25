@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.gusto.lunchmenu.ui.theme.MyApplicationTheme
+import com.gusto.lunchmenu.ui.util.ThemedPreview
 
 @Composable
 fun MainActivityPrompt(
@@ -24,7 +24,7 @@ fun MainActivityPrompt(
 @Preview
 @Composable
 fun MainActivityPromptPreview() {
-	MyApplicationTheme {
+	ThemedPreview {
 		Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
 			MainActivityPrompt(
 				modifier = Modifier

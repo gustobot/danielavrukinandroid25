@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,7 +23,7 @@ import com.gusto.lunchmenu.data.models.Weekday
 import com.gusto.lunchmenu.presentation.models.FoodItem
 import com.gusto.lunchmenu.presentation.sheets.foodItemDetails.components.CertificationRow
 import com.gusto.lunchmenu.presentation.sheets.foodItemDetails.components.IngredientChip
-import com.gusto.lunchmenu.ui.theme.MyApplicationTheme
+import com.gusto.lunchmenu.ui.util.ThemedPreview
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -96,20 +95,18 @@ fun FoodItemDetailsSheet(foodItem: FoodItem, modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun FoodItemDetailsSheetPreview() {
-	MyApplicationTheme {
-		Surface {
-			FoodItemDetailsSheet(
-				foodItem = FoodItem(
-					week = 1,
-					weekday = Weekday.MONDAY,
-					name = "Chicken and waffles",
-					imageResId = 0,
-					price = 14.99,
-					ingredients = listOf("Chicken", "Flour", "Egg", "Maple Syrup", "Butter"),
-					allergens = setOf("Gluten", "Egg", "Dairy"),
-					dietaryCertifications = listOf("High-Protein", "Contains Nuts")
-				)
+	ThemedPreview {
+		FoodItemDetailsSheet(
+			foodItem = FoodItem(
+				week = 1,
+				weekday = Weekday.MONDAY,
+				name = "Chicken and waffles",
+				imageResId = 0,
+				price = 14.99,
+				ingredients = listOf("Chicken", "Flour", "Egg", "Maple Syrup", "Butter"),
+				allergens = setOf("Gluten", "Egg", "Dairy"),
+				dietaryCertifications = listOf("High-Protein", "Contains Nuts")
 			)
-		}
+		)
 	}
 }
