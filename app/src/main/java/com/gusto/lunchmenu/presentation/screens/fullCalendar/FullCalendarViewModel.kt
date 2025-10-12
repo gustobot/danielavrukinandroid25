@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.gusto.lunchmenu.data.MenuRepository
 import com.gusto.lunchmenu.data.models.CalendarItem
 import com.gusto.lunchmenu.data.models.Day
-import com.gusto.lunchmenu.presentation.models.FoodItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

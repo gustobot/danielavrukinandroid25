@@ -12,7 +12,7 @@ class LunchMenuDataSource {
 	 * <a href="https://www.flaticon.com/free-icons/waffle" title="waffle icons">Waffle icons created by Freepik - Flaticon</a>
 	 * 
 	 */
-	
+
 	private val lunchItems = listOf(
 		FoodItem(
 			week = 1,
@@ -90,15 +90,15 @@ class LunchMenuDataSource {
 		),
 	)
 
-    suspend fun getLunchMenu(): Map<Int, List<FoodItem>> {
-        delay(3_000)
-	    return lunchItems
-		    .groupBy {
+	suspend fun getLunchMenu(): Map<Int, List<FoodItem>> {
+		delay(3_000)
+		return lunchItems
+			.groupBy {
 				it.week
-		    }
-        /*return mapOf(
-            1 to listOf("Chicken and waffles", "Tacos", "Curry", "Pizza", "Sushi"),
-            2 to listOf("Breakfast for lunch", "Hamburgers", "Spaghetti", "Salmon", "Sandwiches"),
-        )*/
-    }
+			}
+		/*return mapOf(
+			1 to listOf("Chicken and waffles", "Tacos", "Curry", "Pizza", "Sushi"),
+			2 to listOf("Breakfast for lunch", "Hamburgers", "Spaghetti", "Salmon", "Sandwiches"),
+		)*/
+	}
 }

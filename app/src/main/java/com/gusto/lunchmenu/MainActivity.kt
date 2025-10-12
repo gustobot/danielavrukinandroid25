@@ -14,40 +14,40 @@ import com.gusto.lunchmenu.ui.theme.MyApplicationTheme
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+	private lateinit var binding: ActivityMainBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
 
-        /**
-         * You are welcome make use of Fragments or Compose for your UI
-         * The decision made will not affect the assessment
-         * Please utilize whatever you are most comfortable with
-         * Below are two functions that can be used to get started
-         * Uncomment one and remove the other
-         */
-        setupComposeUI()
+		/**
+		 * You are welcome make use of Fragments or Compose for your UI
+		 * The decision made will not affect the assessment
+		 * Please utilize whatever you are most comfortable with
+		 * Below are two functions that can be used to get started
+		 * Uncomment one and remove the other
+		 */
+		setupComposeUI()
 //        setupFragmentUI()
-    }
+	}
 
-    private fun setupFragmentUI() {
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
-    }
+	private fun setupFragmentUI() {
+		binding = ActivityMainBinding.inflate(layoutInflater)
+		setContentView(binding.root)
+		setSupportActionBar(binding.toolbar)
+	}
 
-    private fun setupComposeUI() {
-        enableEdgeToEdge()
-        setContent {
-            MyApplicationTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-	                FullCalendarScreen(
-		                modifier = Modifier
-			                .fillMaxSize()
-			                .padding(innerPadding),
-	                )
-                }
-            }
-        }
-    }
+	private fun setupComposeUI() {
+		enableEdgeToEdge()
+		setContent {
+			MyApplicationTheme {
+				Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+					FullCalendarScreen(
+						modifier = Modifier
+							.fillMaxSize()
+							.padding(innerPadding),
+					)
+				}
+			}
+		}
+	}
 }

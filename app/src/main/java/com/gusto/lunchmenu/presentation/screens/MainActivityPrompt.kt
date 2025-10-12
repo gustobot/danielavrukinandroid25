@@ -15,10 +15,10 @@ import com.gusto.lunchmenu.ui.theme.MyApplicationTheme
 fun MainActivityPrompt(
 	modifier: Modifier = Modifier,
 ) = Box(
-    modifier = modifier,
-    contentAlignment = Alignment.Center
+	modifier = modifier,
+	contentAlignment = Alignment.Center
 ) {
-    Text("Your UI here, replace with your Composable")
+	Text("Your UI here, replace with your Composable")
 }
 
 @Preview

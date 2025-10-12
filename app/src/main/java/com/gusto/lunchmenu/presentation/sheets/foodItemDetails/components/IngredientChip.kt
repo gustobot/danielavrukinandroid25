@@ -1,6 +1,5 @@
 package com.gusto.lunchmenu.presentation.sheets.foodItemDetails.components
 
-import android.R.attr.text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
