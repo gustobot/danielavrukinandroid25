@@ -47,8 +47,7 @@ class FullCalendarViewModel(
 	fun onDismissBottomSheet() {
 		_uiState.update { currentState ->
 			currentState.copy(
-				selectedDate = null, // Also clear selection
-				viewingFoodItem = null
+				viewingFoodItem = null // Clear the item being viewed, but keep the date selected
 			)
 		}
 	}

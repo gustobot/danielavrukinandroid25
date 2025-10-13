@@ -28,6 +28,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -48,8 +49,9 @@ fun FullCalendarScreen(
 	viewModel: FullCalendarViewModel = viewModel(), // Obtain ViewModel instance
 ) {
 	val uiState by viewModel.uiState.collectAsState() // Observe UI state
+	val coroutineScope = rememberCoroutineScope()
 	val verticalLazyListState = rememberLazyListState()
-	val horizontalLazyListStates = remember(uiState.calendarItems) {
+	val horizontalLazyListStates = remember<Map<Int, LazyListState>>(uiState.calendarItems) {
 		val weekRows = uiState.calendarItems.filterIsInstance<CalendarItem.WeekRow>()
 		weekRows.associate { week -> week.hashCode() to LazyListState() }
 	}
@@ -73,15 +75,18 @@ fun FullCalendarScreen(
 			val weekIndex = findWeekIndexForDate(uiState.calendarItems, targetDate)
 			if (weekIndex != -1) {
 				// Vertical scroll
-				verticalLazyListState.animateScrollToItem(weekIndex)
+				verticalLazyListState.scrollToItem(weekIndex)
 
 				// Horizontal scroll
 				val weekItem = uiState.calendarItems[weekIndex] as? CalendarItem.WeekRow
 				if (weekItem != null) {
 					val dayIndex = weekItem.days.indexOfFirst { it.date == targetDate }
 					if (dayIndex != -1) {
-						horizontalLazyListStates[weekItem.hashCode()]?.animateScrollToItem(dayIndex)
+						horizontalLazyListStates[weekItem.hashCode()]?.scrollToItem(dayIndex)
 					}
+				}
+				if (dateToScrollTo == today) {
+					initialScrollDone = true
 				}
 			}
 		}
