@@ -74,17 +74,18 @@ fun FullCalendarScreen(
 
 			val weekIndex = findWeekIndexForDate(uiState.calendarItems, targetDate)
 			if (weekIndex != -1) {
-				// Vertical scroll
-				verticalLazyListState.scrollToItem(weekIndex)
+				// Animate vertically first, and wait for it to finish
+				verticalLazyListState.animateScrollToItem(weekIndex)
 
-				// Horizontal scroll
-				val weekItem = uiState.calendarItems[weekIndex] as? CalendarItem.WeekRow
+				// THEN, animate horizontally
+				val weekItem = uiState.calendarItems.getOrNull(weekIndex) as? CalendarItem.WeekRow
 				if (weekItem != null) {
 					val dayIndex = weekItem.days.indexOfFirst { it.date == targetDate }
 					if (dayIndex != -1) {
-						horizontalLazyListStates[weekItem.hashCode()]?.scrollToItem(dayIndex)
+						horizontalLazyListStates[weekItem.hashCode()]?.animateScrollToItem(dayIndex)
 					}
 				}
+
 				if (dateToScrollTo == today) {
 					initialScrollDone = true
 				}
