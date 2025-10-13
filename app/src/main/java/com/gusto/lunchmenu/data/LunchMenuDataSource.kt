@@ -36,7 +36,7 @@ class LunchMenuDataSource {
 			week = 1,
 			weekday = Weekday.TUESDAY,
 			name = "Tacos",
-			imageResId = R.drawable.tacos,
+			imageResId = R.drawable.taco,
 			price = 12.50,
 			ingredients = listOf("Tortilla", "Ground Beef", "Lettuce", "Tomato", "Cheese"),
 			allergens = setOf("Gluten", "Dairy")
@@ -111,7 +111,7 @@ class LunchMenuDataSource {
 			week = 2,
 			weekday = Weekday.FRIDAY,
 			name = "Sandwiches",
-			imageResId = R.drawable.sandwiches,
+			imageResId = R.drawable.sandwich,
 			price = 9.75,
 			ingredients = listOf("Bread", "Turkey", "Lettuce", "Mayonnaise"),
 			allergens = setOf("Gluten", "Egg")
