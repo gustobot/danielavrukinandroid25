@@ -29,7 +29,7 @@ class LunchMenuDataSource {
 			imageResId = R.drawable.chicken,
 			price = 14.99,
 			ingredients = listOf("Chicken", "Flour", "Egg", "Maple Syrup", "Butter"),
-			allergens = setOf("Gluten", "Egg", "Dairy"),
+			allergens = setOf("Flour", "Egg", "Butter"),
 			dietaryCertifications = listOf("High-Protein"),
 		),
 		FoodItem(
@@ -39,7 +39,7 @@ class LunchMenuDataSource {
 			imageResId = R.drawable.taco,
 			price = 12.50,
 			ingredients = listOf("Tortilla", "Ground Beef", "Lettuce", "Tomato", "Cheese"),
-			allergens = setOf("Gluten", "Dairy"),
+			allergens = setOf("Tortilla", "Cheese"),
 		),
 		FoodItem(
 			week = 1,
@@ -48,7 +48,7 @@ class LunchMenuDataSource {
 			imageResId = R.drawable.curry,
 			price = 13.00,
 			ingredients = listOf("Coconut Milk", "Tofu", "Broccoli", "Peppers", "Rice"),
-			allergens = setOf("Soy"),
+			allergens = setOf("Tofu"),
 			dietaryCertifications = listOf("Vegan", "Gluten-Free"),
 		),
 		FoodItem(
@@ -58,7 +58,7 @@ class LunchMenuDataSource {
 			imageResId = R.drawable.pizza,
 			price = 15.50,
 			ingredients = listOf("Dough", "Tomato Sauce", "Cheese", "Pepperoni"),
-			allergens = setOf("Gluten", "Dairy"),
+			allergens = setOf("Dough", "Cheese"),
 		),
 		FoodItem(
 			week = 1,
@@ -67,7 +67,7 @@ class LunchMenuDataSource {
 			imageResId = R.drawable.sushi,
 			price = 18.00,
 			ingredients = listOf("Rice", "Nori", "Tuna", "Avocado"),
-			allergens = setOf("Fish"),
+			allergens = setOf("Tuna"),
 			dietaryCertifications = listOf("Gluten-Free"),
 		),
 		FoodItem(
@@ -77,7 +77,7 @@ class LunchMenuDataSource {
 			imageResId = R.drawable.breakfast,
 			price = 11.25,
 			ingredients = listOf("Pancakes", "Sausage", "Scrambled Eggs", "Syrup"),
-			allergens = setOf("Gluten", "Egg", "Dairy"),
+			allergens = setOf("Pancakes", "Scrambled Eggs"),
 		),
 		FoodItem(
 			week = 2,
@@ -86,7 +86,7 @@ class LunchMenuDataSource {
 			imageResId = R.drawable.hamburger,
 			price = 14.00,
 			ingredients = listOf("Bun", "Beef Patty", "Lettuce", "Tomato", "Onion"),
-			allergens = setOf("Gluten"),
+			allergens = setOf("Bun"),
 		),
 		FoodItem(
 			week = 2,
@@ -95,7 +95,7 @@ class LunchMenuDataSource {
 			imageResId = R.drawable.spaghetti,
 			price = 13.75,
 			ingredients = listOf("Pasta", "Tomato Sauce", "Meatballs", "Parmesan Cheese"),
-			allergens = setOf("Gluten", "Dairy"),
+			allergens = setOf("Pasta", "Parmesan Cheese"),
 		),
 		FoodItem(
 			week = 2,
@@ -104,7 +104,7 @@ class LunchMenuDataSource {
 			imageResId = R.drawable.salmon,
 			price = 19.50,
 			ingredients = listOf("Salmon Fillet", "Asparagus", "Lemon", "Dill"),
-			allergens = setOf("Fish"),
+			allergens = setOf("Salmon Fillet"),
 			dietaryCertifications = listOf("Gluten-Free", "High-Protein"),
 		),
 		FoodItem(
@@ -114,7 +114,7 @@ class LunchMenuDataSource {
 			imageResId = R.drawable.sandwich,
 			price = 9.75,
 			ingredients = listOf("Bread", "Turkey", "Lettuce", "Mayonnaise"),
-			allergens = setOf("Gluten", "Egg"),
+			allergens = setOf("Bread", "Mayonnaise"),
 		),
 	)
 
