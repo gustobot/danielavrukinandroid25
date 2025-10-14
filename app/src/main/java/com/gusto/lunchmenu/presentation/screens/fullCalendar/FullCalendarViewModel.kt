@@ -36,7 +36,7 @@ class FullCalendarViewModel(
 		_uiState.update { currentState ->
 			currentState.copy(
 				selectedDate = date,
-				viewingFoodItem = foodItem // Set the item to be viewed
+				viewingFoodItem = foodItem,
 			)
 		}
 	}
@@ -47,7 +47,7 @@ class FullCalendarViewModel(
 	fun onDismissBottomSheet() {
 		_uiState.update { currentState ->
 			currentState.copy(
-				viewingFoodItem = null // Clear the item being viewed, but keep the date selected
+				viewingFoodItem = null,
 			)
 		}
 	}
@@ -60,12 +60,12 @@ class FullCalendarViewModel(
 			val items = generateCalendarItems(
 				start = today.minusMonths(6),
 				end = today.plusMonths(6),
-				menuRepository = menuRepository
+				menuRepository = menuRepository,
 			)
 			_uiState.update {
 				it.copy(
 					isLoading = false,
-					calendarItems = items
+					calendarItems = items,
 				)
 			}
 		}

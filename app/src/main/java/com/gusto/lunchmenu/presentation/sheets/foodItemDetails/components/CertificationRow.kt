@@ -30,7 +30,7 @@ fun CertificationRow(
 			imageVector = Icons.Default.CheckCircle,
 			contentDescription = null, // Decorative icon
 			tint = MaterialTheme.colorScheme.primary,
-			modifier = Modifier.size(20.dp)
+			modifier = Modifier.size(20.dp),
 		)
 		Spacer(Modifier.padding(horizontal = 4.dp))
 		Text(text = text, style = MaterialTheme.typography.bodyLarge)

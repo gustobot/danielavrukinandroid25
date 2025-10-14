@@ -45,12 +45,12 @@ fun WeekView(
 		DayOfWeek.TUESDAY,
 		DayOfWeek.WEDNESDAY,
 		DayOfWeek.THURSDAY,
-		DayOfWeek.FRIDAY
+		DayOfWeek.FRIDAY,
 	)
 
 	Box(
 		modifier = modifier.fillMaxWidth(),
-		contentAlignment = Alignment.Center
+		contentAlignment = Alignment.Center,
 	) {
 		LazyRow(
 			modifier = Modifier.padding(vertical = 8.dp),
@@ -70,7 +70,7 @@ fun WeekView(
 						date = day.date,
 						isSelected = day.date == selectedDate,
 						onItemClick = { onDateSelected(day.date) },
-						isEnabled = !day.date.isBefore(today)
+						isEnabled = !day.date.isBefore(today),
 					)
 				} else {
 					// Add a spacer for days that don't have a menu item (e.g., out of range)
@@ -101,7 +101,7 @@ private val previewFoodItems: List<FoodItem?> = listOf(
 	FoodItem(1, Weekday.TUESDAY, "Tacos", 0),
 	FoodItem(1, Weekday.WEDNESDAY, "Curry", 0),
 	FoodItem(1, Weekday.THURSDAY, "Pizza", 0),
-	FoodItem(1, Weekday.FRIDAY, "Sushi", 0)
+	FoodItem(1, Weekday.FRIDAY, "Sushi", 0),
 )
 
 @Preview(name = "Standard Week")
@@ -112,7 +112,7 @@ private fun WeekViewPreview_Standard() {
 			week = createPreviewWeek(LocalDate.of(2024, 7, 22), previewFoodItems),
 			today = LocalDate.of(2024, 7, 22),
 			selectedDate = null,
-			onDateSelected = {}
+			onDateSelected = {},
 		)
 	}
 }
@@ -125,7 +125,7 @@ private fun WeekViewPreview_WithPastDates() {
 			week = createPreviewWeek(LocalDate.of(2024, 7, 22), previewFoodItems),
 			today = LocalDate.of(2024, 7, 24), // Wednesday
 			selectedDate = null,
-			onDateSelected = {}
+			onDateSelected = {},
 		)
 	}
 }
@@ -138,7 +138,7 @@ private fun WeekViewPreview_WithSelection() {
 			week = createPreviewWeek(LocalDate.of(2024, 7, 22), previewFoodItems),
 			today = LocalDate.of(2024, 7, 22),
 			selectedDate = LocalDate.of(2024, 7, 24), // Wednesday selected
-			onDateSelected = {}
+			onDateSelected = {},
 		)
 	}
 }
@@ -153,7 +153,7 @@ private fun WeekViewPreview_PartiallyFilled() {
 			week = createPreviewWeek(LocalDate.of(2024, 7, 22), partialFoodItems),
 			today = LocalDate.of(2024, 7, 22),
 			selectedDate = null,
-			onDateSelected = {}
+			onDateSelected = {},
 		)
 	}
 }
@@ -166,7 +166,7 @@ private fun WeekViewPreview_Tablet() {
 			week = createPreviewWeek(LocalDate.of(2024, 7, 22), previewFoodItems),
 			today = LocalDate.of(2024, 7, 22),
 			selectedDate = null,
-			onDateSelected = {}
+			onDateSelected = {},
 		)
 	}
 }

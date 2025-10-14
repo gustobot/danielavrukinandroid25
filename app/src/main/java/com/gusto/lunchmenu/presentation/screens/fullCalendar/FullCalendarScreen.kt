@@ -28,7 +28,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -46,12 +45,11 @@ import java.time.LocalDate
 @Composable
 fun FullCalendarScreen(
 	modifier: Modifier = Modifier,
-	viewModel: FullCalendarViewModel = viewModel(), // Obtain ViewModel instance
+	viewModel: FullCalendarViewModel = viewModel(),
 ) {
-	val uiState by viewModel.uiState.collectAsState() // Observe UI state
-	val coroutineScope = rememberCoroutineScope()
+	val uiState by viewModel.uiState.collectAsState()
 	val verticalLazyListState = rememberLazyListState()
-	val horizontalLazyListStates = remember<Map<Int, LazyListState>>(uiState.calendarItems) {
+	val horizontalLazyListStates = remember(uiState.calendarItems) {
 		val weekRows = uiState.calendarItems.filterIsInstance<CalendarItem.WeekRow>()
 		weekRows.associate { week -> week.hashCode() to LazyListState() }
 	}
@@ -95,13 +93,12 @@ fun FullCalendarScreen(
 
 
 	// Show the bottom sheet when there is a food item being viewed
-	if (uiState.viewingFoodItem != null) {
+	uiState.viewingFoodItem?.let { foodItem ->
 		ModalBottomSheet(
 			onDismissRequest = { viewModel.onDismissBottomSheet() },
-			sheetState = rememberModalBottomSheetState()
+			sheetState = rememberModalBottomSheetState(),
 		) {
-			// Content of the bottom sheet
-			FoodItemDetailsSheet(foodItem = uiState.viewingFoodItem!!)
+			FoodItemDetailsSheet(foodItem = foodItem)
 		}
 	}
 
@@ -115,20 +112,19 @@ fun FullCalendarScreen(
 						Text("Pick Date")
 					}
 					Spacer(Modifier.width(8.dp))
-					// Button to scroll back to today
 					Button(onClick = { viewModel.onDateSelected(today) }) {
 						Text("Today")
 					}
-				}
+				},
 			)
-		}
+		},
 	) { paddingValues ->
 		if (uiState.isLoading) {
 			Box(
 				Modifier
 					.fillMaxSize()
 					.padding(paddingValues),
-				contentAlignment = Alignment.Center
+				contentAlignment = Alignment.Center,
 			) {
 				CircularProgressIndicator()
 			}
@@ -138,14 +134,14 @@ fun FullCalendarScreen(
 					.padding(paddingValues)
 					.fillMaxSize(),
 				state = verticalLazyListState,
-				contentPadding = PaddingValues(horizontal = 16.dp)
+				contentPadding = PaddingValues(horizontal = 16.dp),
 			) {
 				uiState.calendarItems.forEach { item ->
 					when (item) {
 						is CalendarItem.MonthHeader -> {
 							stickyHeader(
 								key = item.yearMonth,
-								contentType = "MonthHeader"
+								contentType = "MonthHeader",
 							) {
 								MonthHeader(yearMonth = item.yearMonth)
 							}
@@ -155,7 +151,7 @@ fun FullCalendarScreen(
 							val weekKey = item.days.firstOrNull()?.date
 							item(
 								key = weekKey,
-								contentType = "WeekRow"
+								contentType = "WeekRow",
 							) {
 								WeekView(
 									week = item,
@@ -163,7 +159,7 @@ fun FullCalendarScreen(
 									selectedDate = uiState.selectedDate,
 									onDateSelected = viewModel::onDateSelected,
 									lazyListState = horizontalLazyListStates[item.hashCode()]
-										?: rememberLazyListState()
+										?: rememberLazyListState(),
 								)
 							}
 						}
@@ -176,7 +172,7 @@ fun FullCalendarScreen(
 	// Material 3 Date Picker Dialog
 	if (showDatePicker) {
 		val datePickerState = rememberDatePickerState(
-			initialSelectedDateMillis = System.currentTimeMillis()
+			initialSelectedDateMillis = System.currentTimeMillis(),
 		)
 		DatePickerDialog(
 			onDismissRequest = { showDatePicker = false },
@@ -187,12 +183,12 @@ fun FullCalendarScreen(
 						val millis = datePickerState.selectedDateMillis ?: return@TextButton
 						val newDate = LocalDate.ofEpochDay(millis / (1000 * 60 * 60 * 24))
 						viewModel.onDateSelected(newDate)
-					}
+					},
 				) { Text("OK") }
 			},
 			dismissButton = {
 				TextButton(onClick = { showDatePicker = false }) { Text("Cancel") }
-			}
+			},
 		) {
 			DatePicker(state = datePickerState)
 		}

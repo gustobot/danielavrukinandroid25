@@ -31,23 +31,23 @@ fun FoodItemDetailsSheet(foodItem: FoodItem, modifier: Modifier = Modifier) {
 	Column(
 		modifier = modifier
 			.fillMaxWidth()
-			.padding(horizontal = 24.dp, vertical = 16.dp)
+			.padding(horizontal = 24.dp, vertical = 16.dp),
 	) {
 		// Header: Name and Price
 		Row(
 			modifier = Modifier.fillMaxWidth(),
 			horizontalArrangement = Arrangement.SpaceBetween,
-			verticalAlignment = Alignment.CenterVertically
+			verticalAlignment = Alignment.CenterVertically,
 		) {
 			Text(
 				text = foodItem.name,
 				style = MaterialTheme.typography.headlineMedium,
-				fontWeight = FontWeight.Bold
+				fontWeight = FontWeight.Bold,
 			)
 			Text(
 				text = "$%.2f".format(foodItem.price),
 				style = MaterialTheme.typography.headlineMedium,
-				color = MaterialTheme.colorScheme.primary
+				color = MaterialTheme.colorScheme.primary,
 			)
 		}
 
@@ -61,13 +61,13 @@ fun FoodItemDetailsSheet(foodItem: FoodItem, modifier: Modifier = Modifier) {
 		Text(
 			text = "Ingredients",
 			style = MaterialTheme.typography.titleMedium,
-			fontWeight = FontWeight.Bold
+			fontWeight = FontWeight.Bold,
 		)
 		Spacer(Modifier.height(8.dp))
 		FlowRow(
 			modifier = Modifier.fillMaxWidth(),
 			horizontalArrangement = Arrangement.spacedBy(8.dp),
-			verticalArrangement = Arrangement.spacedBy(8.dp)
+			verticalArrangement = Arrangement.spacedBy(8.dp),
 		) {
 			foodItem.ingredients.forEach { ingredient ->
 				val isAllergen = ingredient in foodItem.allergens
@@ -82,7 +82,7 @@ fun FoodItemDetailsSheet(foodItem: FoodItem, modifier: Modifier = Modifier) {
 			Text(
 				text = "Dietary Information",
 				style = MaterialTheme.typography.titleMedium,
-				fontWeight = FontWeight.Bold
+				fontWeight = FontWeight.Bold,
 			)
 			Spacer(Modifier.height(8.dp))
 			foodItem.dietaryCertifications.forEach { certification ->
@@ -105,8 +105,8 @@ private fun FoodItemDetailsSheetPreview() {
 				price = 14.99,
 				ingredients = listOf("Chicken", "Flour", "Egg", "Maple Syrup", "Butter"),
 				allergens = setOf("Gluten", "Egg", "Dairy"),
-				dietaryCertifications = listOf("High-Protein", "Contains Nuts")
-			)
+				dietaryCertifications = listOf("High-Protein", "Contains Nuts"),
+			),
 		)
 	}
 }

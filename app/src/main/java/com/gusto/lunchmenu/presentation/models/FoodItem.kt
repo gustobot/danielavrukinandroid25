@@ -11,7 +11,6 @@ data class FoodItem(
 	val weekday: Weekday,
 	val name: String,
 	@get:DrawableRes val imageResId: Int,
-	// Add new properties for the bottom sheet
 	val price: Double = 0.0,
 	val ingredients: List<String> = emptyList(),
 	val allergens: Set<String> = emptySet(),

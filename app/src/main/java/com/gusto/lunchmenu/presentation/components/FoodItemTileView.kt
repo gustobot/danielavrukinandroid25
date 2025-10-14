@@ -72,12 +72,12 @@ fun FoodItemTileView(
 			Text(
 				text = date.format(dayOfWeekFormatter).uppercase(),
 				style = MaterialTheme.typography.bodySmall,
-				fontWeight = FontWeight.Bold
+				fontWeight = FontWeight.Bold,
 			)
 			Text(
 				text = date.format(dayOfMonthFormatter),
 				style = MaterialTheme.typography.headlineSmall,
-				fontWeight = FontWeight.Bold
+				fontWeight = FontWeight.Bold,
 			)
 		}
 

@@ -11,5 +11,5 @@ data class CalendarUiState(
 	val isLoading: Boolean = true,
 	val calendarItems: List<CalendarItem> = emptyList(),
 	val selectedDate: LocalDate? = null,
-	val viewingFoodItem: FoodItem? = null, // Add this property
+	val viewingFoodItem: FoodItem? = null,
 )

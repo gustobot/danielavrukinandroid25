@@ -21,6 +21,7 @@ fun IngredientChip(
 	} else {
 		MaterialTheme.colorScheme.secondaryContainer
 	}
+
 	val textColor = if (isAllergen) {
 		MaterialTheme.colorScheme.onErrorContainer
 	} else {

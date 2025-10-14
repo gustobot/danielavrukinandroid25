@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 		setContent {
 			MyApplicationTheme {
 				FullCalendarScreen(
-					modifier = Modifier.fillMaxSize()
+					modifier = Modifier.fillMaxSize(),
 				)
 			}
 		}

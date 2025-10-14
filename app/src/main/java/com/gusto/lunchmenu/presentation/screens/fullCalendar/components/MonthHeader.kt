@@ -30,7 +30,7 @@ fun MonthHeader(
 		modifier = modifier
 			.fillMaxWidth()
 			.background(MaterialTheme.colorScheme.surface)
-			.padding(vertical = 8.dp)
+			.padding(vertical = 8.dp),
 	)
 }
 
@@ -46,7 +46,7 @@ private fun MonthHeaderPreview() {
 @Composable
 private fun MonthHeaderPreview_DifferentMonth() {
 	ThemedPreview {
-		MonthHeader(yearMonth = YearMonth.of(2024, 1)) // January 2024
+		MonthHeader(yearMonth = YearMonth.of(2024, 1))
 	}
 }
 
@@ -54,6 +54,6 @@ private fun MonthHeaderPreview_DifferentMonth() {
 @Composable
 private fun MonthHeaderPreview_Tablet() {
 	ThemedPreview {
-		MonthHeader(yearMonth = YearMonth.of(2025, 8)) // August 2025
+		MonthHeader(yearMonth = YearMonth.of(2025, 8))
 	}
 }
