@@ -2,11 +2,11 @@
     <!--
         Base application theme for light mode.
 
-        This theme inherits from the Material3 NoActionBar theme to ensure that
-        the app does not display a default ActionBar, allowing Jetpack Compose
-        to manage the entire screen layout.
+        This theme inherits from the MaterialComponents DayNight theme and removes the default
+        ActionBar. This ensures a consistent base theme for the app while allowing
+        Jetpack Compose to manage the entire screen layout, including the app bar.
     -->
-    <style name="Theme.GustoLunchMenu" parent="Theme.Material3.Light.NoActionBar">
+    <style name="Theme.GustoLunchMenu" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:statusBarColor">@color/purple_700</item>
     </style>
 </resources>

@@ -36,18 +36,17 @@ android {
 	    sourceCompatibility = JavaVersion.VERSION_17
 	    targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-	    jvmTarget = "17"
-    }
     buildFeatures {
         compose = true
-        viewBinding = true
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+	kotlin {
+		jvmToolchain(17)
+	}
 }
 
 dependencies {
@@ -64,9 +63,7 @@ dependencies {
     implementation(libs.androidx.material3)
 	implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.fragment)
 	implementation(libs.androidx.viewmodel.compose)
-    implementation(libs.androidx.constraintlayout)
     implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
