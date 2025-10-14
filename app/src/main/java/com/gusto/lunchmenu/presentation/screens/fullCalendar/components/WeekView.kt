@@ -1,6 +1,7 @@
 package com.gusto.lunchmenu.presentation.screens.fullCalendar.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -11,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,33 +48,35 @@ fun WeekView(
 		DayOfWeek.FRIDAY
 	)
 
-	// Use LazyRow for a horizontally scrollable container
-	LazyRow(
-		modifier = modifier
-			.fillMaxWidth()
-			.padding(vertical = 8.dp),
-		horizontalArrangement = Arrangement.spacedBy(8.dp),
-		state = lazyListState,
+	Box(
+		modifier = modifier.fillMaxWidth(),
+		contentAlignment = Alignment.Center
 	) {
-		// Iterate through the explicit list to ensure a consistent 5-day layout
-		items(workWeek) { dayOfWeek ->
-			val day = daysByWeekDay[dayOfWeek]
+		LazyRow(
+			modifier = Modifier.padding(vertical = 8.dp),
+			horizontalArrangement = Arrangement.spacedBy(8.dp),
+			state = lazyListState,
+		) {
+			// Iterate through the explicit list to ensure a consistent 5-day layout
+			items(workWeek) { dayOfWeek ->
+				val day = daysByWeekDay[dayOfWeek]
 
-			if (day != null && day.foodItem != null) {
-				FoodItemTileView(
-					modifier = Modifier
-						.width(160.dp) // Set a fixed width for each tile
-						.height(280.dp), // Set a fixed height for each tile
-					foodItem = day.foodItem,
-					date = day.date,
-					isSelected = day.date == selectedDate,
-					onItemClick = { onDateSelected(day.date) },
-					isEnabled = !day.date.isBefore(today)
-				)
-			} else {
-				// Add a spacer for days that don't have a menu item (e.g., out of range)
-				// This keeps the alignment consistent if a week is partially filled.
-				Spacer(modifier = Modifier.width(160.dp))
+				if (day != null && day.foodItem != null) {
+					FoodItemTileView(
+						modifier = Modifier
+							.width(160.dp) // Set a fixed width for each tile
+							.height(280.dp), // Set a fixed height for each tile
+						foodItem = day.foodItem,
+						date = day.date,
+						isSelected = day.date == selectedDate,
+						onItemClick = { onDateSelected(day.date) },
+						isEnabled = !day.date.isBefore(today)
+					)
+				} else {
+					// Add a spacer for days that don't have a menu item (e.g., out of range)
+					// This keeps the alignment consistent if a week is partially filled.
+					Spacer(modifier = Modifier.width(160.dp))
+				}
 			}
 		}
 	}

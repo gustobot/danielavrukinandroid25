@@ -109,9 +109,8 @@ fun FullCalendarScreen(
 		modifier = modifier,
 		topBar = {
 			TopAppBar(
-				title = { Text("Lunch Calendar") },
+				title = { Text("Gusto Lunch Menu") },
 				actions = {
-					// Button to open the date picker
 					Button(onClick = { showDatePicker = true }) {
 						Text("Pick Date")
 					}
@@ -125,12 +124,19 @@ fun FullCalendarScreen(
 		}
 	) { paddingValues ->
 		if (uiState.isLoading) {
-			Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+			Box(
+				Modifier
+					.fillMaxSize()
+					.padding(paddingValues),
+				contentAlignment = Alignment.Center
+			) {
 				CircularProgressIndicator()
 			}
 		} else {
 			LazyColumn(
-				modifier = Modifier.padding(paddingValues),
+				modifier = Modifier
+					.padding(paddingValues)
+					.fillMaxSize(),
 				state = verticalLazyListState,
 				contentPadding = PaddingValues(horizontal = 16.dp)
 			) {
