@@ -64,8 +64,8 @@ fun WeekView(
 				if (day != null && day.foodItem != null) {
 					FoodItemTileView(
 						modifier = Modifier
-							.width(160.dp) // Set a fixed width for each tile
-							.height(280.dp), // Set a fixed height for each tile
+							.width(160.dp)
+							.height(280.dp),
 						foodItem = day.foodItem,
 						date = day.date,
 						isSelected = day.date == selectedDate,
@@ -82,9 +82,6 @@ fun WeekView(
 	}
 }
 
-// --- PREVIEWS (Corrected) ---
-
-// Helper function to create dummy data for previews
 private fun createPreviewWeek(
 	startDate: LocalDate,
 	foodItems: List<FoodItem?>,

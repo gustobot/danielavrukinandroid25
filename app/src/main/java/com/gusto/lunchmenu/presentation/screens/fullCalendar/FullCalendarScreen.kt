@@ -184,7 +184,6 @@ fun FullCalendarScreen(
 		}
 	}
 
-	// Material 3 Date Picker Dialog
 	if (showDatePicker) {
 		val datePickerState = rememberDatePickerState(
 			initialSelectedDateMillis = System.currentTimeMillis(),
