@@ -1,8 +1,10 @@
 package com.gusto.lunchmenu.data.models
 
+import androidx.compose.runtime.Immutable
 import java.time.LocalDate
 import java.time.YearMonth
 
+@Immutable
 sealed interface CalendarItem {
 
 	/**
@@ -10,6 +12,7 @@ sealed interface CalendarItem {
 	 *
 	 * @property yearMonth the month and the year
 	 */
+	@Immutable
 	data class MonthHeader(val yearMonth: YearMonth) : CalendarItem
 
 	/**
@@ -17,6 +20,7 @@ sealed interface CalendarItem {
 	 *
 	 * @property days days in the week
 	 */
+	@Immutable
 	data class WeekRow(val days: List<Day>) : CalendarItem {
 
 		fun contains(date: LocalDate): Boolean {

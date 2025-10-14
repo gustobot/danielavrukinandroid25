@@ -1,5 +1,6 @@
 package com.gusto.lunchmenu.data.models
 
+import androidx.compose.runtime.Immutable
 import com.gusto.lunchmenu.presentation.models.FoodItem
 import java.time.LocalDate
 
@@ -9,6 +10,7 @@ import java.time.LocalDate
  * @property date the date of the day
  * @property foodItem null if weekend or no item available
  */
+@Immutable
 data class Day(
 	val date: LocalDate,
 	val foodItem: FoodItem?,
