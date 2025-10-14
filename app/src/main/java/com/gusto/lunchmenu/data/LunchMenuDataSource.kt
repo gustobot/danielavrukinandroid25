@@ -119,7 +119,7 @@ class LunchMenuDataSource {
 	)
 
 	suspend fun getLunchMenu(): Map<Int, List<FoodItem>> {
-		delay(1_500)
+		delay(3_000)
 		return lunchItems.groupBy {
 			it.week
 		}
