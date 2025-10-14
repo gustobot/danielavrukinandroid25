@@ -38,6 +38,7 @@ import com.gusto.lunchmenu.data.models.CalendarItem
 import com.gusto.lunchmenu.presentation.screens.fullCalendar.components.MonthHeader
 import com.gusto.lunchmenu.presentation.screens.fullCalendar.components.WeekView
 import com.gusto.lunchmenu.presentation.sheets.foodItemDetails.FoodItemDetailsSheet
+import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 
@@ -61,7 +62,8 @@ fun FullCalendarScreen(
 
 	// Effect to handle all scrolling logic
 	LaunchedEffect(uiState.selectedDate, uiState.calendarItems) {
-		val dateToScrollTo = uiState.selectedDate ?: if (!initialScrollDone) today else null
+		val isInitialLoad = !initialScrollDone
+		val dateToScrollTo = uiState.selectedDate ?: if (isInitialLoad) today else null
 
 		if (dateToScrollTo != null && uiState.calendarItems.isNotEmpty()) {
 			val targetDate = when (dateToScrollTo.dayOfWeek) {
@@ -72,20 +74,33 @@ fun FullCalendarScreen(
 
 			val weekIndex = findWeekIndexForDate(uiState.calendarItems, targetDate)
 			if (weekIndex != -1) {
-				// Animate vertically first, and wait for it to finish
-				verticalLazyListState.animateScrollToItem(weekIndex)
-
-				// THEN, animate horizontally
-				val weekItem = uiState.calendarItems.getOrNull(weekIndex) as? CalendarItem.WeekRow
-				if (weekItem != null) {
-					val dayIndex = weekItem.days.indexOfFirst { it.date == targetDate }
-					if (dayIndex != -1) {
-						horizontalLazyListStates[weekItem.hashCode()]?.animateScrollToItem(dayIndex)
+				launch {
+					// --- VERTICAL SCROLL ---
+					if (isInitialLoad) {
+						verticalLazyListState.scrollToItem(weekIndex)
+					} else {
+						verticalLazyListState.animateScrollToItem(weekIndex)
 					}
-				}
 
-				if (dateToScrollTo == today) {
-					initialScrollDone = true
+					// --- HORIZONTAL SCROLL (runs after vertical scroll completes) ---
+					val weekItem =
+						uiState.calendarItems.getOrNull(weekIndex) as? CalendarItem.WeekRow
+					if (weekItem != null) {
+						val dayIndex = weekItem.days.indexOfFirst { it.date == targetDate }
+						if (dayIndex != -1) {
+							val horizontalState = horizontalLazyListStates[weekItem.hashCode()]
+							if (isInitialLoad) {
+								horizontalState?.scrollToItem(dayIndex)
+							} else {
+								horizontalState?.animateScrollToItem(dayIndex)
+							}
+						}
+					}
+
+					// Mark initial scroll as done ONLY after it has completed
+					if (isInitialLoad) {
+						initialScrollDone = true
+					}
 				}
 			}
 		}
